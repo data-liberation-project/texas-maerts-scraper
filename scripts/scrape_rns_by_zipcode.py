@@ -1,6 +1,9 @@
+# Library imports 
 import os
+import re
 import sys
 import logging
+import argparse
 from time import sleep
 from io import StringIO
 import pandas as pd
@@ -13,8 +16,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-
-import argparse
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -32,6 +33,7 @@ DATA_PATH = os.path.join(BASE_DIR, '..', 'data')
 URL = "https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent.RNSearch"
 WAIT_TIME = 10
 
+# Helper functions
 def wait_for_element(driver, by, value, timeout=WAIT_TIME):
     return WebDriverWait(driver, timeout).until(EC.presence_of_element_located((by, value)))
 
@@ -85,7 +87,7 @@ def scrape_zip(driver, zip_code):
         driver.find_element(By.NAME, '_fuseaction=regent.validateRE').click()
 
         try:
-            results_text = WebDriverWait(driver, 5).until(
+            results_text = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '/html/body/div/div[2]/div[2]/span')))
             record_line = results_text.text.strip()
             record_numbers = [s for s in record_line.split() if s.isdigit()]
@@ -111,7 +113,15 @@ def scrape_zip(driver, zip_code):
         dfs = []
         while True:
             try:
-                df = pd.read_html(StringIO(driver.page_source))[0]
+                sleep(3)
+                try:
+                    df = pd.read_html(StringIO(driver.page_source))[0]
+                    logging.info(f"DataFrame shape after read_html: {df.shape}")
+                except Exception as e:
+                    logging.error(f"pd.read_html failed for ZIP {zip_code}: {e}")
+                    df = pd.DataFrame()
+
+                #df = pd.read_html(StringIO(driver.page_source))[0]
                 df["zipcode"] = zip_code
                 dfs.append(df)
 
@@ -144,10 +154,26 @@ def main():
         for zip_code in args.zipcodes:
             df = scrape_zip(driver, zip_code)
             if not df.empty:
+                logging.info(f"Appending {len(df)} rows for ZIP {zip_code}")
                 combined_results.append(df)
+            else:
+                logging.info(f"No data for ZIP {zip_code}")
 
     if combined_results:
-        final_df = pd.concat(combined_results, ignore_index=True)
+        logging.info(f"Total DataFrames collected: {len(combined_results)}")
+        total_rows_before_concat = sum(len(df) for df in combined_results)
+        logging.info(f"Total rows across all DataFrames before concat: {total_rows_before_concat}")
+
+        # Debug: log columns of first 3 DataFrames
+        for idx, df in enumerate(combined_results[:3]):
+            logging.info(f"Columns in DataFrame {idx}: {list(df.columns)}")
+
+        final_df = pd.concat(combined_results, ignore_index=True, join='outer')
+        logging.info(f"Total rows after concat: {len(final_df)}")
+
+        final_df.columns = [re.sub(r'\s+', '_', col.strip().lower()) for col in final_df.columns]
+        
+
         final_df.to_csv(output_path, index=False)
         logging.info(f"Saved {len(final_df)} total rows to {output_path}")
     else:
