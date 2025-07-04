@@ -43,7 +43,7 @@ The data from this tool can help answer important questions about air pollution,
 - Ensure you have Python 3 installed
 - From this repository, run `python3 -m venv virtual_env` to create its virtual environment
 - Run `. virtual_env/bin/activate` to activate the virtual environment
-- Run pip install -r requirements.txt to install the necessary Python libraries
+- Run `pip install -r requirements.txt` to install the necessary Python libraries
 ### Workflow
 1. To download permit metadata for your target zip codes:
 ```
