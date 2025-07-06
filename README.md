@@ -43,19 +43,20 @@ The data from this tool can help answer important questions about air pollution,
 - Ensure you have Python 3 installed
 - From this repository, run `python3 -m venv virtual_env` to create its virtual environment
 - Run `. virtual_env/bin/activate` to activate the virtual environment
-- Run `pip install -r requirements.txt` to install the necessary Python libraries
+- Run `pip3 install --upgrade pip`
+- Run `pip3 install -r requirements.txt` to install the necessary Python libraries
 ### Workflow
 1. To download permit metadata for your target zip codes:
 ```
-  python3 scrape_rns_by_zipcode.py 10001 10002 # Replace with your desired zipcodes
+  python3 scripts/scrape_rns_by_zipcode.py 73960 75001 # Replace with your desired zipcodes
 ```
 2. Download the permit PDFs containing MAERT tables:
 ```
-python3 download_maert_pdfs.py
+python3 scripts/download_maert_pdfs.py
 ```
 3. Extract MAERT tables from the downloaded PDFs into CSV files:
 ```
-python3 extract_tables.py
+python3 scripts/extract_tables.py
 ```
 These steps will result in multiple CSV files containing extracted MAERT tables. Because MAERT tables across air permits vary in formatting and quality, it is recommended that you visually check and manually edit these CSVs to ensure the data has been correctly captured.
 
