@@ -46,9 +46,9 @@ The data from this tool can help answer important questions about air pollution,
 - Run `pip3 install --upgrade pip`
 - Run `pip3 install -r requirements.txt` to install the necessary Python libraries
 ### Workflow
-1. To download permit metadata for your target zip codes:
+1. To download permit metadata for your target zip codes (replace zipcodes with your desired zipcodes):
 ```
-  python3 scripts/scrape_rns_by_zipcode.py 73960 75001 # Replace with your desired zipcodes
+  python3 scripts/scrape_rns_by_zipcode.py 73960 75001 
 ```
 2. Download the permit PDFs containing MAERT tables:
 ```
