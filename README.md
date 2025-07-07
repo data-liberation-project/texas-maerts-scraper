@@ -29,8 +29,7 @@ Our process is as follows:
 ### What potential uses are there for this data? 
 The data from this tool can help answer important questions about air pollution, regulation, and environmental impacts in Texas. These are a few ideas for how it might be used. If you end up working with this tool, the Data Liberation Project would love to hear from you!
 
-**Environmental Justice & Public Health**: 
-- Who is most exposed to pollution — and where?
+**Environmental Justice & Public Health**: Who is most exposed to pollution — and where?
 - Map permitted emission limits alongside demographic data (like race, income, or health outcomes).
 - Identify neighborhoods with especially high concentrations of permitted pollution.
 
@@ -45,6 +44,7 @@ The data from this tool can help answer important questions about air pollution,
 - Run `. virtual_env/bin/activate` to activate the virtual environment
 - Run `pip3 install --upgrade pip`
 - Run `pip3 install -r requirements.txt` to install the necessary Python libraries
+  
 ### Workflow
 1. To download permit metadata for your target zip codes (replace zipcodes with your desired zipcodes):
 ```
