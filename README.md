@@ -75,7 +75,7 @@ Despite these challenges, the extraction strategies have been generally successf
 - Kat de Jesus Chua (@kat-djc)
 
 ## Licensing
-This repository's code is available under the [MIT License terms](https://opensource.org/license/mit). The raw data files (in data/fetched) and PDFs are public domain. All other data files are available under Creative Commons' [CC BY-SA 4.0 license terms](https://creativecommons.org/licenses/by-sa/4.0/).
+This repository's code is available under the [MIT License terms](https://opensource.org/license/mit). The raw PDFs are public domain. All other data files are available under Creative Commons' [CC BY-SA 4.0 license terms](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ## Questions?
 File an issue in this repository. 
